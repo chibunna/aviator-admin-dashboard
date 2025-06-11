@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Aviator Control</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="login-page">
     <div class="login-container">
         <div class="login-box">
@@ -13,21 +15,21 @@
                 <h1>🎯 Aviator Control</h1>
                 <p>System Administration Panel</p>
             </div>
-            
+
             <form id="loginForm" class="login-form">
                 <div class="form-group">
                     <label for="password">Administrator Password</label>
                     <input type="password" id="password" name="password" placeholder="Enter admin password" required>
                 </div>
-                
+
                 <button type="submit" class="login-btn">
                     <span id="loginBtnText">Access Dashboard</span>
                     <span id="loginSpinner" class="spinner" style="display: none;">⟳</span>
                 </button>
-                
+
                 <div id="loginError" class="error-message" style="display: none;"></div>
             </form>
-            
+
             <div class="login-footer">
                 <p>Secure access to bot management system</p>
             </div>
@@ -35,51 +37,78 @@
     </div>
 
     <script>
-        const ADMIN_PASSWORD = "AviatorAdmin2025!";
-        
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        const API_BASE_URL = 'https://aviator-control-api.onrender.com';
+
+        async function validatePassword(password) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/validate-password`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+
+                const result = await response.json();
+                return result.valid === true;
+            } catch (error) {
+                console.error('Password validation error:', error);
+                return false;
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             const password = document.getElementById('password').value;
             const errorDiv = document.getElementById('loginError');
             const btnText = document.getElementById('loginBtnText');
             const spinner = document.getElementById('loginSpinner');
-            
+
             // Show loading
             btnText.style.display = 'none';
             spinner.style.display = 'inline';
             errorDiv.style.display = 'none';
-            
-            // Simulate loading delay
-            setTimeout(() => {
-                if (password === ADMIN_PASSWORD) {
+
+            try {
+                const isValid = await validatePassword(password);
+
+                if (isValid) {
                     // Store authentication
                     localStorage.setItem('aviator_admin_auth', 'true');
                     localStorage.setItem('aviator_admin_login_time', Date.now().toString());
-                    
+
                     // Redirect to dashboard
                     window.location.href = 'index.html';
                 } else {
                     // Show error
                     errorDiv.textContent = 'Invalid password. Access denied.';
                     errorDiv.style.display = 'block';
-                    
+
                     // Reset button
                     btnText.style.display = 'inline';
                     spinner.style.display = 'none';
-                    
+
                     // Clear password field
                     document.getElementById('password').value = '';
                 }
-            }, 1000);
+            } catch (error) {
+                // Show network error
+                errorDiv.textContent = 'Connection error. Please try again.';
+                errorDiv.style.display = 'block';
+
+                // Reset button
+                btnText.style.display = 'inline';
+                spinner.style.display = 'none';
+            }
         });
-        
+
         // Check if already logged in
         if (localStorage.getItem('aviator_admin_auth') === 'true') {
             const loginTime = localStorage.getItem('aviator_admin_login_time');
             const now = Date.now();
             const hoursSinceLogin = (now - parseInt(loginTime)) / (1000 * 60 * 60);
-            
+
             // Auto-logout after 24 hours
             if (hoursSinceLogin < 24) {
                 window.location.href = 'index.html';
@@ -90,4 +119,5 @@
         }
     </script>
 </body>
+
 </html>
