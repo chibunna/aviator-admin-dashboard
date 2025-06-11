@@ -186,6 +186,10 @@ body {
     background: #e2e8f0;
 }
 
+#globalKillBtn small {
+    display: block;
+}
+
 .btn-danger {
     background: #e53e3e;
     color: white;
