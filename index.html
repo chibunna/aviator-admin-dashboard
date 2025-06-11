@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Bot Control Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>🎯 Aviator Control Dashboard</h1>
+            </div>
+            <div class="header-actions">
+                <button id="refreshBtn" class="btn btn-secondary">
+                    <span id="refreshIcon">🔄</span> Refresh
+                </button>
+                <button id="logoutBtn" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Dashboard Stats -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🤖</div>
+                    <div class="stat-info">
+                        <h3 id="totalBots">0</h3>
+                        <p>Total Bots</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🟢</div>
+                    <div class="stat-info">
+                        <h3 id="onlineBots">0</h3>
+                        <p>Online</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔴</div>
+                    <div class="stat-info">
+                        <h3 id="offlineBots">0</h3>
+                        <p>Offline</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-info">
+                        <h3 id="lastUpdate">--</h3>
+                        <p>Last Update</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Control Panel -->
+        <section class="control-section">
+            <div class="control-panel">
+                <div class="emergency-controls">
+                    <button id="globalKillBtn" class="btn btn-danger btn-large">
+                        <span>🛑</span>
+                        <div>
+                            <strong>EMERGENCY STOP</strong>
+                            <small>Stop All Bots</small>
+                        </div>
+                    </button>
+                </div>
+                
+                <div class="search-controls">
+                    <input type="text" id="searchInput" placeholder="Search bots by username or hostname..." class="search-input">
+                </div>
+            </div>
+        </section>
+
+        <!-- Bot Management -->
+        <section class="bots-section">
+            <div class="section-header">
+                <h2>Bot Management</h2>
+                <div class="bot-count">
+                    <span id="visibleBotCount">0</span> bots displayed
+                </div>
+            </div>
+            
+            <div id="loadingIndicator" class="loading">
+                <div class="spinner">⟳</div>
+                <p>Loading bot data...</p>
+            </div>
+            
+            <div id="errorMessage" class="error-banner" style="display: none;">
+                <span id="errorText"></span>
+                <button id="retryBtn" class="btn btn-small">Retry</button>
+            </div>
+            
+            <div id="botsGrid" class="bots-grid">
+                <!-- Bot cards will be dynamically generated here -->
+            </div>
+            
+            <div id="noBots" class="no-bots" style="display: none;">
+                <div class="no-bots-icon">🤖</div>
+                <h3>No Bots Found</h3>
+                <p>No registered bots match your search criteria.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage"></p>
+            </div>
+            <div class="modal-actions">
+                <button id="modalCancel" class="btn btn-secondary">Cancel</button>
+                <button id="modalConfirm" class="btn btn-danger">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
