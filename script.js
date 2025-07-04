@@ -1,7 +1,7 @@
 // Configuration
 const API_BASE_URL = 'https://aviator-control-api.onrender.com';
 const REFRESH_INTERVAL = 30000; // 30 seconds
-const MAX_OFFLINE_HOURS = 2; // Consider bot offline after 2 hours
+const MAX_OFFLINE_HOURS = 48; // Consider bot offline after 48 hours
 
 // Global state
 let botsData = {};
@@ -137,7 +137,7 @@ function getBotStatus(bot) {
     
     if (hoursSinceCheckin > MAX_OFFLINE_HOURS) {
         return { status: 'offline', label: 'Offline', class: 'status-offline' };
-    } else if (hoursSinceCheckin > 1) {
+    } else if (hoursSinceCheckin > 25) {
         return { status: 'warning', label: 'Warning', class: 'status-warning' };
     } else {
         return { status: 'online', label: 'Online', class: 'status-online' };
